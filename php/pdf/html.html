@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<link rel="stylesheet" href="">
+	        <script type="text/javascript">
+        
+        
+        function createREQ() {
+                try {
+                req = new XMLHttpRequest(); /* p.e. Firefox */
+                }
+                catch(err1){
+                    try {
+                    req = new ActiveXObject('Msxml2.XMLHTTP'); /* algunas versiones IE */
+                    }
+                    catch (err2) {
+                        try {
+                        req = new ActiveXObject("Microsoft.XMLHTTP"); /* algunas versiones IE */
+                        }
+                        catch (err3) {
+                        req = false;
+                        }
+                    }
+                }
+        return req;
+        }
+        
+        
+        function mostrarpdf(){
+        var pdf = document.getElementById("pdf");
+            if(pdf.value == "0"){ alert("elija!!"); return false; }
+        var http = new createREQ();
+        http.open("POST", "php.php", true);
+        http.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        var archivo = document.getElementById("pdf").value;
+        http.send("archivo="+archivo);  
+        
+        http.onreadystatechange = function(){
+                if(http.readyState == 4 && http.status == 200){
+                var response = http.responseText;
+                document.getElementById("emb").setAttribute("src", response);
+                }
+            };
+        }
+        </script>
+</head>
+<body>
+	        <select id="pdf" onchange="mostrarpdf();">
+            <option value="0">Elejir</option>
+            <option value="cotizacion.pdf">Pdf cotizacion</option>
+            <option value="tarea.pdf">Pdf tarea</option>
+            <option value="certificado.pdf">Pdf certificado</option>
+        </select>
+        <br/><br/><br/>
+        <embed src="" width="500" height="500" id="emb"/>
+</body>
+</html>
